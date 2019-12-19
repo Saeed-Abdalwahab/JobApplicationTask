@@ -1,0 +1,186 @@
+﻿@using ArmyTech_Task_SaeedAbdalWahab.Models.VM
+@using ArmyTech_Task_SaeedAbdalWahab.Models
+@model ApplicantPersonalinfoVM
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<section class="container center-block">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+
+    {
+        {
+            if (TempData["Msg"] != null)
+            {
+    <p class="success text-success text-center table-bordered">@TempData["Msg"]</p>
+            }
+        }
+    <div class="form-horizontal">
+
+        <h4>Application</h4>
+
+        <hr />
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+
+            @Html.Label("الاسم", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+
+                @Html.TextBoxFor(model => model.Applicant.Name, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Applicant.Name,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            @Html.Label("تاريخ الميلاد", new { @class = "control-label col-md-2"})
+
+            <div class="col-md-10">
+
+                @Html.TextBoxFor(model => model.Applicant.BirthDate,"{0:d MMM yyyy}", new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Applicant.BirthDate,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            @Html.Label("البريد الاليكتروني", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+
+                @Html.TextBoxFor(model => model.Applicant.EMail, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Applicant.EMail,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            @Html.Label("الجنس", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @{
+                    var Gender = ViewBag.Gender as SelectList;
+                }
+                @Html.DropDownListFor(model => model.Applicant.GenderId, Gender, "   -- النوع --   ",new { @class="form-control text-center"})
+
+                @Html.ValidationMessageFor(model => model.Applicant.GenderId,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            @Html.Label("التليفون", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+
+                @Html.TextBoxFor(model => model.Applicant.MobileNo, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Applicant.MobileNo,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            @Html.Label("المؤهل", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                
+                @Html.DropDownListFor(model=> model.ApplicantQualification.CertificationSpecificId,ViewBag.Certification as SelectList , "--المؤهل--", new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.ApplicantQualification.CertificationTypeId,"",new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+
+            @Html.Label("الخبرات السابقه", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+
+                @Html.TextAreaFor(model => model.ApplicantQualification.Description, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Applicant.MobileNo,"",new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            @Html.Label("المجال", new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                <ul class="list-unstyled">
+                    @{
+                        var jobs = ViewBag.Jobs as List<ApplicationsField>;
+                    }
+                    @for (int i = 0; i < jobs.Count; i++)
+                    {
+                        var item = jobs[i];
+                        <li><input type="checkbox" name="SelectedFields" value=@item.ID class="checkbox-inline " /><span>@item.Name</span> </li>
+                    }
+
+                </ul>
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit"  value="تقديم" class="btn btn-default" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+</section>
+@section scripts{
+    @*<script>
+
+
+    var url = '@Url.Action("GetDropdownList", "Home")'
+   var specifications = $('#ApplicantQualification_CertificationSpecificId'); // cache it
+$("#ApplicantQualification_CertificationTypeId").change(function () {
+    var id = $(this).val(); // Use $(this) so you don't traverse the DOM again
+    $.getJSON(url, { value: id }, function (response) {
+        Specifications.empty(); // remove any existing options
+        $.each(response, function (index, item) { // item is now an object containing properties ID and Text
+            Specifications.append($('<option></option>').text(item.Text).val(item.ID));
+        });
+    });
+});
+
+    </script>*@
+}
